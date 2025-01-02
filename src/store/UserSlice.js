@@ -14,12 +14,13 @@ export const UserSlice = createSlice({
       state.userData = { accessToken, displayName, email, uid };
       state.loading = false;
     },
-  },
 
-  logout: (state) => {
-    state.userStatus = false;
-    state.userData = null;
-    state.loading = false;
+    logout: (state) => {
+      console.log("Logout Called");
+      state.userStatus = false;
+      state.userData = null;
+      state.loading = false;
+    },
   },
 });
 

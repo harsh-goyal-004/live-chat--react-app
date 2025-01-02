@@ -16,7 +16,7 @@ function SignUp() {
   const submitForm = async (data) => {
     try {
       setError("");
-      const { name, email, password } = data;
+      const { uid, name, email, password } = data;
       const user = await authService.signUp(email, password, name);
 
       if (user) {

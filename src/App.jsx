@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import authService from "./firebase/auth";
 import { login, logout } from "./store/UserSlice";
+import Chat from "./components/Chat";
 
 function App() {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function App() {
           })
         );
       } else {
+        console.log("logout called");
         dispatch(logout());
       }
     });
@@ -45,10 +47,12 @@ function App() {
                 <MainPage />
               </Protected>
             }
-          />
-
-          <Route path="signup" element={<SignUp />} />
-          <Route path="login" element={<Login />} />
+          >
+            {" "}
+            <Route path="chat/:id" element={<Chat />} />
+          </Route>
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </>

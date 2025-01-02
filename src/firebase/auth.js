@@ -6,7 +6,11 @@ import {
   browserLocalPersistence,
   setPersistence,
   onAuthStateChanged,
+  signOut,
+  inMemoryPersistence,
 } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+import { db } from "./firebase";
 
 export class AuthService {
   constructor() {
@@ -24,16 +28,24 @@ export class AuthService {
 
   async signUp(email, password, name) {
     try {
-      //   console.log(email, password, name);
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      const user = userCredential.user;
+
+      const user = userCredential.user; //Add new created user data to user
+
       await updateProfile(user, {
         displayName: name,
       });
+
+      //Add userCredentials to Database
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        name: name,
+      });
+
       return user;
     } catch (error) {
       console.log("Sign Up Error : ", error);
@@ -65,6 +77,15 @@ export class AuthService {
         callback(null);
       }
     });
+  }
+
+  async clearSession() {
+    try {
+      await signOut(auth);
+      console.log("User Signed out Successful");
+    } catch (error) {
+      console.log("SignOut Error : ", error);
+    }
   }
 }
 
